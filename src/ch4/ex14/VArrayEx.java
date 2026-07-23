@@ -29,37 +29,40 @@ class VArray {
     }
 
     public void add(int num) {
-        if (size >= array.length) {
-            resizeArray();
-        }
+        resizeArray();
         array[size] = num;
         size += 1;
     }
 
     public void insert(int index, int num) {
-        if (size >= array.length) {
-            resizeArray();
+        if (index < 0 || index > size) {
+            return;
         }
-        for (int i = index; i <= size; i++) {
-            int tmp = array[i];
-            array[i] = num;
-            num = tmp;
+        resizeArray();
+
+        for (int i = size; i > index; i--) {
+            array[i] = array[i - 1];
         }
-        size += 1;
+        array[index] = num;
+        size++;
     }
 
     public void remove(int index) {
-        if (index > size) {
+        if (index < 0 || index >= size) {
             return;
         }
-        for (int i = index; i < size; i++) {
+        for (int i = index; i < size - 1; i++) {
             array[i] = array[i + 1];
         }
-        size -= 1;
+        size--;
         array[size] = 0;
     }
 
     private void resizeArray() {
+        if (size < array.length) {
+            return;
+        }
+
         int[] newArray = new int[array.length * 2];
         for (int i = 0; i < array.length; i++) {
             newArray[i] = array[i];
