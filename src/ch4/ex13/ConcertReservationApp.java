@@ -2,6 +2,7 @@ package src.ch4.ex13;
 
 import java.util.*;
 
+// todo: String 빈값 검증 추가
 class InputValidator {
     public static int getIntInRange(String input, int minValue, int maxValue) {
         int value = 0;
@@ -22,7 +23,6 @@ class InputValidator {
     }
 }
 
-// todo: 각 메뉴에서 취소 번호 0 추가
 class Seat {
     private String name;
 
@@ -106,6 +106,9 @@ class Concert {
             System.out.print("좌석 번호>>");
             String input = scanner.nextLine();
             int index = InputValidator.getIntInRange(input, 1, 10);
+            if (index == -1) {
+                continue;
+            }
 
             if (!selectedSeats[index - 1].isEmpty()) {
                 System.out.println("이미 예약되어 있는 좌석입니다. 다른 좌석을 선택해주세요.");
@@ -184,7 +187,6 @@ public class ConcertReservationApp {
             int cmd = InputValidator.getIntInRange(input, 1, 4);
 
             switch (cmd) {
-                // cmd == 0 일 때 다시 돌게 하는 로직 이렇게 하는거 괜찮나?
                 case -1:
                     break;
                 case 1:
