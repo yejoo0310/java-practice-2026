@@ -2,7 +2,7 @@ package src.ch4.ex13;
 
 import java.util.*;
 
-// todo: String 빈값 검증 추가
+// todo: 0 누르면 해당 선택 취소하는 기능 추가
 class InputValidator {
     public static int getIntInRange(String input, int minValue, int maxValue) {
         int value = 0;
@@ -20,6 +20,14 @@ class InputValidator {
         }
 
         return value;
+    }
+
+    public static boolean isBlank(String input) {
+        if (input == null || input.trim().isEmpty()) {
+            System.out.println("이름을 입력해야 합니다.");
+            return true;
+        }
+        return false;
     }
 }
 
@@ -103,6 +111,9 @@ class Concert {
         while (true) {
             System.out.print("이름>>");
             String name = scanner.nextLine();
+            if (InputValidator.isBlank(name)) {
+                continue;
+            }
             System.out.print("좌석 번호>>");
             String input = scanner.nextLine();
             int index = InputValidator.getIntInRange(input, 1, 10);
@@ -155,8 +166,16 @@ class Concert {
         }
         showSeats(type, selectedSeats);
 
-        System.out.print("이름>>");
-        String name = scanner.nextLine().trim();
+        String name = "";
+        while (true) {
+            System.out.print("이름>>");
+            name = scanner.nextLine().trim();
+            if (InputValidator.isBlank(name)) {
+                continue;
+            }
+            break;
+        }
+
         for (Seat seat : selectedSeats) {
             if (seat.isEmpty()) {
                 continue;
