@@ -2,6 +2,27 @@ package src.ch4.ex13;
 
 import java.util.*;
 
+class InputValidator {
+    public static int getIntInRange(String input, int minValue, int maxValue) {
+        int value = 0;
+
+        try {
+            value = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            System.out.println("정수를 입력해야 합니다.");
+            return -1;
+        }
+
+        if (value < minValue || value > maxValue) {
+            System.out.println(minValue + "부터 " + maxValue + " 사이의 정수를 입력해야 합니다.");
+            return -1;
+        }
+
+        return value;
+    }
+}
+
+// todo: 각 메뉴에서 취소 번호 0 추가
 class Seat {
     private String name;
 
@@ -52,23 +73,12 @@ class Concert {
     }
 
     public void reserveSeat(Scanner scanner) {
-        int cmd = 0;
-
-        while (true) {
+        int cmd = -1;
+        do {
             System.out.print("좌석구분 S(1), A(2), B(3)>>");
             String input = scanner.nextLine();
-            try {
-                cmd = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("정수를 입력해야 합니다.");
-                continue;
-            }
-            if (cmd < 1 || cmd > 4) {
-                System.out.println("1부터 3 사이의 정수를 입력해야 합니다.");
-                continue;
-            }
-            break;
-        }
+            cmd = InputValidator.getIntInRange(input, 1, 3);
+        } while (cmd == -1);
 
         String type = "";
         Seat[] selectedSeats = null;
@@ -95,17 +105,8 @@ class Concert {
             String name = scanner.nextLine();
             System.out.print("좌석 번호>>");
             String input = scanner.nextLine();
-            int index = 0;
-            try {
-                index = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("정수를 입력해야 합니다.");
-                continue;
-            }
-            if (index < 1 || index > 11) {
-                System.out.println("좌석은 1부터 10까지 입니다.");
-                continue;
-            }
+            int index = InputValidator.getIntInRange(input, 1, 10);
+
             if (!selectedSeats[index - 1].isEmpty()) {
                 System.out.println("이미 예약되어 있는 좌석입니다. 다른 좌석을 선택해주세요.");
                 continue;
@@ -123,23 +124,13 @@ class Concert {
     }
 
     public void cancelSeat(Scanner scanner) {
-        int cmd = 0;
+        int cmd = -1;
 
-        while (true) {
+        do {
             System.out.print("좌석구분 S(1), A(2), B(3)>>");
             String input = scanner.nextLine();
-            try {
-                cmd = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("정수를 입력해야 합니다.");
-                continue;
-            }
-            if (cmd < 1 || cmd > 4) {
-                System.out.println("1부터 3 사이의 정수를 입력해야 합니다.");
-                continue;
-            }
-            break;
-        }
+            cmd = InputValidator.getIntInRange(input, 1, 3);
+        } while (cmd == -1);
 
         String type = "";
         Seat[] selectedSeats = null;
@@ -185,34 +176,16 @@ public class ConcertReservationApp {
         concert = new Concert();
     }
 
-    private int getUserCmd(String input) {
-        int cmd = 0;
-
-        try {
-            cmd = Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            System.out.println("정수를 입력해야 합니다.");
-            return 0;
-        }
-
-        if (cmd < 1 || cmd > 5) {
-            System.out.println("1부터 4 사이의 정수를 입력해야 합니다.");
-            return 0;
-        }
-
-        return cmd;
-    }
-
     public void run() {
         while (true) {
             System.out.print("예약:1, 조회:2, 취소:3, 끝내기:4>>");
 
             String input = scanner.nextLine();
-            int cmd = getUserCmd(input);
+            int cmd = InputValidator.getIntInRange(input, 1, 4);
 
             switch (cmd) {
                 // cmd == 0 일 때 다시 돌게 하는 로직 이렇게 하는거 괜찮나?
-                case 0:
+                case -1:
                     break;
                 case 1:
                     concert.reserveSeat(scanner);
