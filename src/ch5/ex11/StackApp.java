@@ -1,6 +1,6 @@
 package src.ch5.ex11;
 
-import java.util.*;
+import java.util.Scanner;
 
 interface IStack {
     int capacity();
@@ -63,15 +63,34 @@ class StringStack implements IStack {
 }
 
 public class StackApp {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("스택 용량>>");
-        int size = scanner.nextInt();
+    private final Scanner scanner;
+
+    public StackApp() {
+        scanner = new Scanner(System.in);
+    }
+
+    public void run() {
+        int size;
+        while (true) {
+            System.out.print("스택 용량>>");
+            String input = scanner.nextLine().trim();
+            try {
+                size = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("양의 정수를 입력해야 합니다.");
+                continue;
+            }
+            break;
+        }
         StringStack stack = new StringStack(size);
 
         while (true) {
             System.out.print("문자열 입력>>");
-            String str = scanner.next();
+            String str = scanner.nextLine().trim();
+            if (str.equals("")) {
+                System.out.println("문자열을 입력해야 합니다.");
+                continue;
+            }
             if (str.equals("그만")) {
                 System.out.print("스택에 저장된 문자열 팝 :");
                 for (int i = stack.length() - 1; i >= 0; i--) {
@@ -83,7 +102,18 @@ public class StackApp {
                 System.out.println("스택이 꽉 차서 " + str + " 저장 불가");
             }
         }
+    }
 
+    public void close() {
         scanner.close();
+    }
+
+    public static void main(String[] args) {
+        StackApp app = new StackApp();
+        try {
+            app.run();
+        } finally {
+            app.close();
+        }
     }
 }
