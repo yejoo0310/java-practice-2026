@@ -1,53 +1,33 @@
 package src.ch5.ex05;
 
-class Point{
-    private int x, y;
-    public Point(int x, int y){
-        this.x = x;
-        this.y = y;
-    }
+import src.ch5.ex03.Point;
 
-    public int getX(){
-        return x;
-    }
-
-    public int getY(){
-        return y;
-    }
-
-    protected void move(int x, int y){
-        this.x = x;
-        this.y = y;
-    }
-}
-
-class Point3D extends Point {
+public class Point3D extends Point {
     private int z;
-    public Point3D(int x, int y, int z){
+
+    public Point3D(int x, int y, int z) {
         super(x, y);
         this.z = z;
     }
 
-    public String toString(){
+    public String toString() {
         return "(" + getX() + "," + getY() + "," + z + ")의 점";
     }
 
-    protected void moveUp(int z){
+    protected void moveUp(int z) {
         this.z += z;
     }
 
-    protected void moveDown(int z){
+    protected void moveDown(int z) {
         this.z -= z;
     }
 
-    protected void move(int x, int y, int z){
+    protected void move(int x, int y, int z) {
         move(x, y);
         this.z = z;
     }
-}
 
-public class Point3DEx {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Point3D p = new Point3D(3, 2, 1);
         System.out.println(p.toString() + "입니다.");
 
