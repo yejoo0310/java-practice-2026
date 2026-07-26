@@ -1,29 +1,30 @@
 package src.ch5.ex01;
 
-class TV{
+class TV {
     private int size;
-    public TV(int size){
+
+    public TV(int size) {
         this.size = size;
     }
-    protected int getSize(){
+
+    protected int getSize() {
         return size;
     }
 }
 
-class ColorTV extends TV{
+class ColorTV extends TV {
     private int color;
-    public ColorTV(int size, int color){
+
+    public ColorTV(int size, int color) {
         super(size);
         this.color = color;
     }
 
-    public void printProperty(){
+    public void printProperty() {
         System.out.println(getSize() + "인치 " + color + "컬러");
     }
-}
 
-public class ColorTVEx {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         ColorTV myTv = new ColorTV(65, 65536);
         myTv.printProperty();
     }
