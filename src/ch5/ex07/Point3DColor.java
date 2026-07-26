@@ -1,30 +1,7 @@
 package src.ch5.ex07;
+import src.ch5.ex03.Point;
 
-import src.ch5.ex05.Point;
-
-class Point {
-    private int x, y;
-
-    public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    protected void move(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-}
-
-class Point3DColor extends Point {
+public class Point3DColor extends Point {
     private int z;
     private String color;
 
@@ -48,17 +25,15 @@ class Point3DColor extends Point {
         }
         return false;
     }
-}
 
-public class Point3DColorEx {
     public static void main(String[] args) {
         Point3DColor p = new Point3DColor(10, 20, 30, "RED");
         System.out.println(p.toString() + "입니다.");
-
+    
         Point3DColor q = new Point3DColor(1, 2, 3, "BLUE");
         p.move(q);
         System.out.println(p.toString() + "입니다.");
-
+    
         Point3DColor r = new Point3DColor(1, 2, 30, "RED");
         if (p.equals(r)) {
             System.out.println("예. 같은 위치 같은 색깔의 점입니다.");
