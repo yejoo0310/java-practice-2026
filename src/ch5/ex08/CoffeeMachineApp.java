@@ -140,6 +140,11 @@ public class CoffeeMachineApp {
                 continue;
             }
 
+            if (choice < 1 || choice > 4) {
+                System.out.println("1-4 사이의 정수를 입력해야 합니다.");
+                continue;
+            }
+
             if (choice == 4) {
                 System.out.println("청춘 커피 자판기 프로그램을 종료합니다.");
                 break;
