@@ -1,4 +1,5 @@
 package src.ch5.ex07;
+
 import src.ch5.ex03.Point;
 
 public class Point3DColor extends Point {
@@ -11,8 +12,17 @@ public class Point3DColor extends Point {
         this.color = color;
     }
 
+    private int getZ() {
+        return z;
+    }
+
+    private void setZ(int z) {
+        this.z = z;
+    }
+
     protected void move(Point3DColor p) {
         super.move(p.getX(), p.getY());
+        setZ(p.getZ());
     }
 
     public String toString() {
@@ -29,12 +39,12 @@ public class Point3DColor extends Point {
     public static void main(String[] args) {
         Point3DColor p = new Point3DColor(10, 20, 30, "RED");
         System.out.println(p.toString() + "입니다.");
-    
+
         Point3DColor q = new Point3DColor(1, 2, 3, "BLUE");
         p.move(q);
         System.out.println(p.toString() + "입니다.");
-    
-        Point3DColor r = new Point3DColor(1, 2, 30, "RED");
+
+        Point3DColor r = new Point3DColor(1, 2, 3, "RED");
         if (p.equals(r)) {
             System.out.println("예. 같은 위치 같은 색깔의 점입니다.");
         } else {
