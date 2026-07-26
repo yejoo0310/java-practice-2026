@@ -14,50 +14,49 @@ interface IStack {
 
 class StringStack implements IStack {
     private String[] stack;
-    private int size; // 스택 크기
-    private int capacity; // 스택에 저장 가능한 개수
-    private int length; // 스택에 현재 저장된 개수
+    private int length;
 
     public StringStack(int size) {
         stack = new String[size];
-        this.size = size;
-        this.capacity = this.size;
         this.length = 0;
     }
 
+    @Override
     public int capacity() {
-        return capacity;
+        return stack.length;
     }
 
+    @Override
     public int length() {
         return length;
     }
 
     public boolean isFull() {
-        return capacity == 0;
+        return length == stack.length;
     }
 
     public boolean isEmpty() {
         return length == 0;
     }
 
+    @Override
     public boolean push(String val) {
         if (isFull()) {
             return false;
         }
         stack[length] = val;
         length++;
-        capacity--;
         return true;
     }
 
+    @Override
     public String pop() {
         if (isEmpty()) {
             return null;
         }
-        String tmp = stack[length - 1];
-        length--;
-        capacity++;
+
+        String tmp = stack[--length];
+        stack[length] = null;
         return tmp;
     }
 }
@@ -70,38 +69,55 @@ public class StackApp {
     }
 
     public void run() {
-        int size;
+        int capacity = getCapacity();
+        StringStack stack = new StringStack(capacity);
+        processStack(stack);
+    }
+
+    private int getCapacity() {
         while (true) {
             System.out.print("스택 용량>>");
             String input = scanner.nextLine().trim();
-            try {
-                size = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("양의 정수를 입력해야 합니다.");
-                continue;
-            }
-            break;
-        }
-        StringStack stack = new StringStack(size);
 
+            try {
+                int capacity = Integer.parseInt(input);
+                if (capacity > 0) {
+                    return capacity;
+                }
+            } catch (NumberFormatException ignored) {
+            }
+
+            System.out.println("양의 정수를 입력해야 합니다.");
+        }
+    }
+
+    private void processStack(StringStack stack) {
         while (true) {
             System.out.print("문자열 입력>>");
             String str = scanner.nextLine().trim();
+
             if (str.equals("")) {
                 System.out.println("문자열을 입력해야 합니다.");
                 continue;
             }
+
             if (str.equals("그만")) {
-                System.out.print("스택에 저장된 문자열 팝 :");
-                for (int i = stack.length() - 1; i >= 0; i--) {
-                    System.out.print(" " + stack.pop());
-                }
-                break;
+                printAll(stack);
+                return;
             }
+
             if (!stack.push(str)) {
                 System.out.println("스택이 꽉 차서 " + str + " 저장 불가");
             }
         }
+    }
+
+    private void printAll(StringStack stack) {
+        System.out.print("스택에 저장된 문자열 팝 :");
+        while (!stack.isEmpty()) {
+            System.out.print(" " + stack.pop());
+        }
+        System.out.println();
     }
 
     public void close() {
