@@ -20,6 +20,10 @@ public class ColorTV extends TV {
         this.color = color;
     }
 
+    protected int getColor() {
+        return color;
+    }
+
     public void printProperty() {
         System.out.println(getSize() + "인치 " + color + "컬러");
     }
