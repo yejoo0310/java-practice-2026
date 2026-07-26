@@ -1,28 +1,8 @@
 package src.ch5.ex06;
 
-class Point {
-    private int x, y;
+import src.ch5.ex03.Point;
 
-    public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    protected void move(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-}
-
-class PositivePoint extends Point {
+public class PositivePoint extends Point {
     public PositivePoint(int x, int y) {
         super(x, y);
         if (x < 0 || y < 0) {
@@ -30,6 +10,7 @@ class PositivePoint extends Point {
         }
     }
 
+    @Override
     protected void move(int x, int y) {
         if (x < 0 || y < 0) {
             return;
@@ -40,9 +21,7 @@ class PositivePoint extends Point {
     public String toString() {
         return "(" + getX() + "," + getY() + ")의 점";
     }
-}
 
-public class PositivePointEx {
     public static void main(String[] args) {
         PositivePoint p = new PositivePoint(10, 10);
         p.move(5, 5);
