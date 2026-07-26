@@ -1,22 +1,23 @@
 package src.ch5.ex08;
 
-import java.util.*;
+import java.util.Scanner;
 
-abstract class Box{
+abstract class Box {
     protected int size;
-    public Box(int size){
+
+    public Box(int size) {
         this.size = size;
     }
 
-    protected int getSize(){
+    protected int getSize() {
         return size;
     }
-    
-    protected void setSize(int amount){
+
+    protected void decreaseSize(int amount) {
         size -= amount;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return size == 0;
     }
 
@@ -25,43 +26,44 @@ abstract class Box{
     public abstract void print();
 }
 
-class IngredientBox extends Box{
+class IngredientBox extends Box {
     private String name;
-    public IngredientBox(String name, int size){
+
+    public IngredientBox(String name, int size) {
         super(size);
         this.name = name;
     }
 
-    public boolean consume(){
-        if (isEmpty()){
+    public boolean consume() {
+        if (isEmpty()) {
             return false;
         }
-        setSize(1);
+        decreaseSize(1);
         return true;
     }
 
-    public void print(){
+    public void print() {
         System.out.print(name + " ");
-        for (int i = 0; i < getSize(); i++){
+        for (int i = 0; i < getSize(); i++) {
             System.out.print("*");
         }
         System.out.println(getSize());
     }
 }
 
-class CoffeeMachine{
+class CoffeeMachine {
     private IngredientBox coffee;
     private IngredientBox cream;
     private IngredientBox sugar;
 
-    public CoffeeMachine(int coffeeSize, int creamSize, int sugarSize){
-        coffee = new IngredientBox("coffee", coffeeSize);
-        cream = new IngredientBox("cream", creamSize);
-        sugar = new IngredientBox("sugar", sugarSize);
+    public CoffeeMachine(int coffeeSize, int creamSize, int sugarSize) {
+        coffee = new IngredientBox("커피", coffeeSize);
+        cream = new IngredientBox("프림", creamSize);
+        sugar = new IngredientBox("설탕", sugarSize);
     }
 
-    public boolean makeCoffee(int menu){
-        switch (menu){
+    public boolean makeCoffee(int menu) {
+        switch (menu) {
             case 1:
                 return makeDabangCoffee();
             case 2:
@@ -73,8 +75,8 @@ class CoffeeMachine{
         }
     }
 
-    public boolean makeDabangCoffee(){
-        if (coffee.isEmpty() || cream.isEmpty() || sugar.isEmpty()){
+    public boolean makeDabangCoffee() {
+        if (coffee.isEmpty() || cream.isEmpty() || sugar.isEmpty()) {
             return false;
         }
         coffee.consume();
@@ -83,8 +85,8 @@ class CoffeeMachine{
         return true;
     }
 
-    public boolean makeSugarCoffee(){
-        if (coffee.isEmpty() || sugar.isEmpty()){
+    public boolean makeSugarCoffee() {
+        if (coffee.isEmpty() || sugar.isEmpty()) {
             return false;
         }
         coffee.consume();
@@ -92,24 +94,73 @@ class CoffeeMachine{
         return true;
     }
 
-    public boolean makeBlackCoffee(){
-        if (coffee.isEmpty()){
+    public boolean makeBlackCoffee() {
+        if (coffee.isEmpty()) {
             return false;
         }
         coffee.consume();
         return true;
     }
+
+    public void printAllIngredient() {
+        coffee.print();
+        cream.print();
+        sugar.print();
+    }
 }
 
 public class CoffeeMachineApp {
-    public static void main(String[] args){
-        Scanner scanner = new Scanner(System.in);
-        CoffeeMachine machine = new CoffeeMachine(5, 5, 5);
+    private final Scanner scanner;
+    CoffeeMachine machine;
 
+    public CoffeeMachineApp() {
+        scanner = new Scanner(System.in);
+        machine = new CoffeeMachine(5, 5, 5);
+    }
+
+    public void run() {
         System.out.println("*****청춘 커피 자판기 입니다.*****");
+        machine.printAllIngredient();
+        order();
+    }
 
-        while (true){
+    private void order() {
+        while (true) {
+            System.out.print("다방커피:1, 설탕 커피:2, 블랙 커피:3, 종료:4>>");
+            String input = scanner.nextLine().trim();
 
+            int choice;
+            try {
+                choice = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("1-4 사이의 정수를 입력해야 합니다.");
+                continue;
+            }
+
+            if (choice == 4) {
+                System.out.println("청춘 커피 자판기 프로그램을 종료합니다.");
+                break;
+            }
+
+            boolean result = machine.makeCoffee(choice);
+            if (!result) {
+                System.out.println("원료가 부족합니다.");
+            }
+            machine.printAllIngredient();
+        }
+    }
+
+    public void close() {
+        scanner.close();
+    }
+
+    public static void main(String[] args) {
+        CoffeeMachineApp app = new CoffeeMachineApp();
+
+        try {
+            app.run();
+        } finally {
+            app.close();
         }
     }
 }
