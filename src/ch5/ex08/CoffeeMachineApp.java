@@ -101,7 +101,7 @@ class CoffeeMachine{
     }
 }
 
-public class CoffeeBoxEx {
+public class CoffeeMachineApp {
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
         CoffeeMachine machine = new CoffeeMachine(5, 5, 5);
