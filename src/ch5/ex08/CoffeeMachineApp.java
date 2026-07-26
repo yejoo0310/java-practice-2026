@@ -2,8 +2,10 @@ package src.ch5.ex08;
 
 import java.util.Scanner;
 
+// todo: 유효하지 않은 경우 방어 코드 추가
+// todo: 콘솔 출력 부분을 CoffeeMachine -> CoffeeMachineApp으로 분리
 abstract class Box {
-    protected int size;
+    private int size;
 
     public Box(int size) {
         this.size = size;
@@ -27,7 +29,7 @@ abstract class Box {
 }
 
 class IngredientBox extends Box {
-    private String name;
+    private final String name;
 
     public IngredientBox(String name, int size) {
         super(size);
@@ -62,6 +64,7 @@ class CoffeeMachine {
         sugar = new IngredientBox("설탕", sugarSize);
     }
 
+    // todo: 메뉴 enum으로 바꾸기
     public boolean makeCoffee(int menu) {
         switch (menu) {
             case 1:
@@ -75,7 +78,7 @@ class CoffeeMachine {
         }
     }
 
-    public boolean makeDabangCoffee() {
+    private boolean makeDabangCoffee() {
         if (coffee.isEmpty() || cream.isEmpty() || sugar.isEmpty()) {
             return false;
         }
@@ -85,7 +88,7 @@ class CoffeeMachine {
         return true;
     }
 
-    public boolean makeSugarCoffee() {
+    private boolean makeSugarCoffee() {
         if (coffee.isEmpty() || sugar.isEmpty()) {
             return false;
         }
@@ -94,7 +97,7 @@ class CoffeeMachine {
         return true;
     }
 
-    public boolean makeBlackCoffee() {
+    private boolean makeBlackCoffee() {
         if (coffee.isEmpty()) {
             return false;
         }
@@ -111,7 +114,7 @@ class CoffeeMachine {
 
 public class CoffeeMachineApp {
     private final Scanner scanner;
-    CoffeeMachine machine;
+    private final CoffeeMachine machine;
 
     public CoffeeMachineApp() {
         scanner = new Scanner(System.in);
