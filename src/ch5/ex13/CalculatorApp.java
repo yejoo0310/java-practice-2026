@@ -29,7 +29,7 @@ abstract class Calc {
         return errorMsg;
     }
 
-    abstract public int calculate();
+    public abstract int calculate();
 }
 
 class Add extends Calc {
@@ -53,6 +53,7 @@ class Mul extends Calc {
     }
 }
 
+// todo: 에러시 0 반환 대신, 예외 던지기로 수정
 class Div extends Calc {
     @Override
     public int calculate() {
@@ -64,6 +65,7 @@ class Div extends Calc {
     }
 }
 
+// todo: 입력 처리와 객체 생성 책임 분리
 public class CalculatorApp {
     private final Scanner scanner;
 
@@ -78,15 +80,20 @@ public class CalculatorApp {
             String line = scanner.nextLine().trim();
             StringTokenizer st = new StringTokenizer(line);
 
+            if (st.countTokens() != 3) {
+                System.out.println("두 정수와 연산자를 순서대로 입력해야 합니다.");
+                continue;
+            }
+
             int a, b;
             try {
-                a = Integer.parseInt(st.nextToken().trim());
-                b = Integer.parseInt(st.nextToken().trim());
+                a = Integer.parseInt(st.nextToken());
+                b = Integer.parseInt(st.nextToken());
             } catch (NumberFormatException e) {
                 System.out.println("정수를 입력해야 합니다.");
                 continue;
             }
-            String operator = st.nextToken().trim();
+            String operator = st.nextToken();
 
             Calc calc;
             switch (operator) {
