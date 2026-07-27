@@ -32,54 +32,57 @@ class Circle implements Shape {
 }
 
 class Oval implements Shape {
-    private final int x, y;
+    private final int width, height;
 
-    public Oval(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Oval(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
     @Override
     public void draw() {
-        System.out.println(x + "x" + y + "에 내접하는 타원");
+        System.out.println(width + "x" + height + "에 내접하는 타원");
     }
 
     @Override
     public double getArea() {
-        return PI * x * y;
+        return PI * width * height;
     }
 }
 
 class Rect implements Shape {
-    private final int x, y;
+    private final int width, height;
 
-    public Rect(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Rect(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
     @Override
     public void draw() {
-        System.out.println(x + "x" + y + "크기의 사각형");
+        System.out.println(width + "x" + height + "크기의 사각형");
     }
 
     @Override
     public double getArea() {
-        return x * y;
+        return width * height;
     }
 }
 
 public class ShapeEx {
-    static public void main(String[] args) {
-        Shape[] list = new Shape[3];
-        list[0] = new Circle(5);
-        list[1] = new Oval(20, 30);
-        list[2] = new Rect(10, 40);
-        for (int i = 0; i < list.length; i++) {
-            list[i].redraw();
+    public static void main(String[] args) {
+        Shape[] list = {
+                new Circle(5),
+                new Oval(20, 30),
+                new Rect(10, 40)
+        };
+
+        for (Shape shape : list) {
+            shape.redraw();
         }
-        for (int i = 0; i < list.length; i++) {
-            System.out.println("면적은 " + list[i].getArea());
+
+        for (Shape shape : list) {
+            System.out.println("면적은 " + shape.getArea());
         }
     }
 }
