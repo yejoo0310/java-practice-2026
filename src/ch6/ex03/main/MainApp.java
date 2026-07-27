@@ -1,6 +1,6 @@
 package src.ch6.ex03.main;
 
-import src.ch6.ex03.main.util.Calc;
+import src.ch6.ex03.util.Calc;
 
 public class MainApp {
     public static void main(String[] args) {

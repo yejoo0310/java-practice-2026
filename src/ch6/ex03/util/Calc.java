@@ -1,4 +1,4 @@
-package src.ch6.ex03.main.util;
+package src.ch6.ex03.util;
 
 public class Calc {
     private int x, y;
