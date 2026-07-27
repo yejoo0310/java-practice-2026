@@ -1,4 +1,4 @@
-package src.ch6.ex04.graphic.component;
+package src.ch6.ex04.component;
 
 import src.ch6.ex04.graphic.Shape;
 
