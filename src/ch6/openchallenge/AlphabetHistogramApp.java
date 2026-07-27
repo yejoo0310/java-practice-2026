@@ -25,11 +25,11 @@ public class AlphabetHistogramApp {
         return sb.toString();
     }
 
-    private void calculate(int number) {
-        char alphabet = (char) ('A' + number);
+    private void calculate() {
         for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == alphabet) {
-                count[number]++;
+            char ch = str.charAt(i);
+            if (ch >= 'A' && ch <= 'Z') {
+                count[ch - 'A']++;
             }
         }
     }
@@ -47,9 +47,7 @@ public class AlphabetHistogramApp {
 
     public void run() {
         str = readString().toUpperCase();
-        for (int i = 0; i < count.length; i++) {
-            calculate(i);
-        }
+        calculate();
         printHistogram();
     }
 
