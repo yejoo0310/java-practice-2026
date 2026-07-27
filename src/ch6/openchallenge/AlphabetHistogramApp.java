@@ -1,16 +1,12 @@
 package src.ch6.openchallenge;
 
 import java.util.Scanner;
-import java.lang.StringBuffer;
 
 public class AlphabetHistogramApp {
     private final Scanner scanner;
-    private String str;
-    private int[] count;
 
     public AlphabetHistogramApp() {
         scanner = new Scanner(System.in);
-        count = new int[26];
     }
 
     private String readString() {
@@ -25,20 +21,22 @@ public class AlphabetHistogramApp {
         return sb.toString();
     }
 
-    private void calculate() {
-        for (int i = 0; i < str.length(); i++) {
-            char ch = str.charAt(i);
+    private int[] countAlphabets(String text) {
+        int[] counts = new int[26];
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
             if (ch >= 'A' && ch <= 'Z') {
-                count[ch - 'A']++;
+                counts[ch - 'A']++;
             }
         }
+        return counts;
     }
 
-    private void printHistogram() {
-        for (int i = 0; i < count.length; i++) {
+    private void printHistogram(int[] counts) {
+        for (int i = 0; i < counts.length; i++) {
             char alphabet = (char) ('A' + i);
             System.out.print(alphabet);
-            for (int j = 0; j < count[i]; j++) {
+            for (int j = 0; j < counts[i]; j++) {
                 System.out.print("-");
             }
             System.out.println();
@@ -46,9 +44,9 @@ public class AlphabetHistogramApp {
     }
 
     public void run() {
-        str = readString().toUpperCase();
-        calculate();
-        printHistogram();
+        String text = readString().toUpperCase();
+        int[] counts = countAlphabets(text);
+        printHistogram(counts);
     }
 
     public void close() {
