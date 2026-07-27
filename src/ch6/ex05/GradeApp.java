@@ -2,6 +2,8 @@ package src.ch6.ex05;
 
 import java.util.Scanner;
 
+// todo: 입력과 계산이 하나의 클래스에 몰려있어서 분리하기
+// ex. getScore, calculateAverage를 빼서 계산 로직 분리
 public class GradeApp {
     private final Scanner scanner;
 
@@ -17,6 +19,7 @@ public class GradeApp {
                 System.out.println("학점을 입력해주세요.");
                 continue;
             }
+            // todo: `null` 대신 `Optional<String[]>` 같은 것을 이용해 사용자 입력 종료 여부를 전달
             if (line.equals("그만")) {
                 return null;
             }
@@ -24,6 +27,7 @@ public class GradeApp {
         }
     }
 
+    // todo: 학점 enum으로 표현
     private int getScore(String grade) {
         switch (grade.toUpperCase()) {
             case "A":
