@@ -1,74 +1,63 @@
 package src.ch5.ex13;
 
-import java.util.*;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
-abstract class Calculaotr {
+abstract class Calc {
     private int x, y;
     private String errorMsg;
 
     public void setValue(int x, int y) {
         this.x = x;
         this.y = y;
+        errorMsg = null;
     }
 
-    public int getX() {
+    protected int getX() {
         return x;
     }
 
-    public int getY() {
+    protected int getY() {
         return y;
     }
 
-    public void setErrorMsg(String str) {
+    protected void setErrorMsg(String str) {
         errorMsg = str;
     }
 
-    public void printErrorMsg() {
-        System.out.println(errorMsg);
+    public String getErrorMsg() {
+        return errorMsg;
     }
 
-    abstract public int calculator();
+    abstract public int calculate();
 }
 
-class Add extends Calculaotr {
-    public Add(int x, int y) {
-        setValue(x, y);
-    }
-
-    public int calculator() {
+class Add extends Calc {
+    @Override
+    public int calculate() {
         return getX() + getY();
     }
 }
 
-class Sub extends Calculaotr {
-    public Sub(int x, int y) {
-        setValue(x, y);
-    }
-
-    public int calculator() {
+class Sub extends Calc {
+    @Override
+    public int calculate() {
         return getX() - getY();
     }
 }
 
-class Mul extends Calculaotr {
-    public Mul(int x, int y) {
-        setValue(x, y);
-    }
-
-    public int calculator() {
+class Mul extends Calc {
+    @Override
+    public int calculate() {
         return getX() * getY();
     }
 }
 
-class Div extends Calculaotr {
-    public Div(int x, int y) {
-        setValue(x, y);
-    }
-
-    public int calculator() {
+class Div extends Calc {
+    @Override
+    public int calculate() {
         if (getY() == 0) {
             setErrorMsg("0으로 나눌 수 없음. 프로그램 종료");
-            printErrorMsg();
             return 0;
         }
         return getX() / getY();
@@ -76,43 +65,76 @@ class Div extends Calculaotr {
 }
 
 public class CalculatorApp {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int flag = 1;
+    private final Scanner scanner;
 
-        while (flag == 1) {
+    public CalculatorApp() {
+        scanner = new Scanner(System.in);
+    }
+
+    private Calc getCalc() {
+        while (true) {
             System.out.print("두 정수와 연산자를 입력하시오>>");
-            int x = scanner.nextInt();
-            int y = scanner.nextInt();
-            String operator = scanner.next();
 
+            String line = scanner.nextLine().trim();
+            StringTokenizer st = new StringTokenizer(line);
+
+            int a, b;
+            try {
+                a = Integer.parseInt(st.nextToken().trim());
+                b = Integer.parseInt(st.nextToken().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("정수를 입력해야 합니다.");
+                continue;
+            }
+            String operator = st.nextToken().trim();
+
+            Calc calc;
             switch (operator) {
                 case "+":
-                    Add add = new Add(x, y);
-                    System.out.println("계산 결과 " + add.calculator());
-                    add = null;
+                    calc = new Add();
                     break;
                 case "-":
-                    Sub sub = new Sub(x, y);
-                    System.out.println("계산 결과 " + sub.calculator());
-                    sub = null;
+                    calc = new Sub();
                     break;
                 case "*":
-                    Mul mul = new Mul(x, y);
-                    System.out.println("계산 결과 " + mul.calculator());
-                    mul = null;
+                    calc = new Mul();
                     break;
                 case "/":
-                    Div div = new Div(x, y);
-                    int result = div.calculator();
-                    if (result == 0) {
-                        flag = 0;
-                        break;
-                    }
-                    System.out.println("계산 결과 " + result);
+                    calc = new Div();
                     break;
+                default:
+                    System.out.println("잘못된 연산자입니다. 다시 입력해주세요.");
+                    continue;
             }
+
+            calc.setValue(a, b);
+            return calc;
         }
+    }
+
+    public void run() {
+        while (true) {
+            Calc calc = getCalc();
+            int result = calc.calculate();
+
+            if (calc.getErrorMsg() != null) {
+                System.out.println(calc.getErrorMsg());
+                break;
+            }
+            System.out.println("계산 결과 " + result);
+        }
+    }
+
+    public void close() {
         scanner.close();
+    }
+
+    public static void main(String[] args) {
+        CalculatorApp app = new CalculatorApp();
+        try {
+            app.run();
+        } finally {
+            app.close();
+        }
     }
 }
