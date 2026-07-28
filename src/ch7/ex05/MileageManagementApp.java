@@ -49,16 +49,12 @@ public class MileageManagementApp {
     }
 
     private void addCustomer(String name, int mileage) {
-        if (customerList.containsKey(name)) {
-            mileage += customerList.get(name);
-            customerList.put(name, mileage);
-            return;
-        }
-        customerList.put(name, mileage);
+        int currentMileage = customerList.getOrDefault(name, 0);
+        customerList.put(name, currentMileage + mileage);
     }
 
     private void showAllCustomer() {
-        if (customerList.size() == 0) {
+        if (customerList.isEmpty()) {
             System.out.println("저장된 고객이 없습니다.");
             return;
         }
@@ -72,20 +68,19 @@ public class MileageManagementApp {
     }
 
     private void showHighestCustomer() {
-        if (customerList.size() == 0) {
-            return;
-        }
-        int maxMileage = 0;
-        String higestCustomer = "";
+        Map.Entry<String, Integer> firstEntry = customerList.entrySet().iterator().next();
+
+        String highestCustomer = firstEntry.getKey();
+        int maxMileage = firstEntry.getValue();
+
         for (Map.Entry<String, Integer> entry : customerList.entrySet()) {
-            String name = entry.getKey();
-            int mileage = entry.getValue();
-            if (mileage > maxMileage) {
-                maxMileage = mileage;
-                higestCustomer = name;
+            if (entry.getValue() > maxMileage) {
+                maxMileage = entry.getValue();
+                highestCustomer = entry.getKey();
             }
         }
-        System.out.println("가장 마일리지가 높은 고객은 " + higestCustomer + "입니다.");
+
+        System.out.println("가장 마일리지가 높은 고객은 " + highestCustomer + "입니다.");
     }
 
     public void run() {
