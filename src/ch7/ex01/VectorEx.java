@@ -4,14 +4,14 @@ import java.util.*;
 
 public class VectorEx {
     private final Scanner scanner;
-    private final Vector<Integer> v;
+    private final Vector<Integer> numbers;
 
     public VectorEx() {
         scanner = new Scanner(System.in);
-        v = new Vector<Integer>();
+        numbers = new Vector<Integer>();
     }
 
-    private void getUserInput() {
+    private void readNumbers() {
         System.out.print("정수 입력(-1이면 종료)>>");
         String line = scanner.nextLine().trim();
 
@@ -23,19 +23,28 @@ public class VectorEx {
                     return;
                 }
                 if (number < 0) {
-                    continue;
+                    throw new NumberFormatException();
                 }
-                v.add(number);
-            } catch (NumberFormatException ignored) {
+                numbers.add(number);
+            } catch (NumberFormatException e) {
+                System.out.println(input + "은(는) 정수가 아니므로 무시합니다.");
             }
         }
     }
 
-    public void run() {
-        getUserInput();
+    private void printMinimum() {
+        if (numbers.isEmpty()) {
+            System.out.println("저장된 정수가 없습니다.");
+            return;
+        }
 
-        int minValue = Collections.min(v);
+        int minValue = Collections.min(numbers);
         System.out.println("제일 작은 수는 " + minValue);
+    }
+
+    public void run() {
+        readNumbers();
+        printMinimum();
     }
 
     public void close() {
