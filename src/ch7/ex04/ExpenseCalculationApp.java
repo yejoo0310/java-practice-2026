@@ -55,14 +55,15 @@ public class ExpenseCalculationApp {
                 continue;
             }
 
-            int totalCost = calculateTotalCost(list);
-            if (totalCost > 0) {
+            Integer totalCost = calculateTotalCost(list);
+
+            if (totalCost != null) {
                 System.out.println("전체 비용은 " + totalCost + "입니다.");
             }
         }
     }
 
-    private int calculateTotalCost(String[] purchaseList) {
+    private Integer calculateTotalCost(String[] purchaseList) {
         int totalCost = 0;
 
         for (int i = 0; i < purchaseList.length; i += 2) {
@@ -70,19 +71,20 @@ public class ExpenseCalculationApp {
 
             if (!menu.containsKey(productName)) {
                 System.out.println(productName + "은(는) 없는 상품입니다!");
-                continue;
+                return null;
             }
 
             try {
                 int count = Integer.parseInt(purchaseList[i + 1]);
                 if (count <= 0) {
                     System.out.println("입력에 문제가 있습니다!");
-                    continue;
+                    return null;
                 }
                 int price = menu.get(productName);
                 totalCost += price * count;
             } catch (NumberFormatException e) {
                 System.out.println("입력에 문제가 있습니다!");
+                return null;
             }
         }
 
