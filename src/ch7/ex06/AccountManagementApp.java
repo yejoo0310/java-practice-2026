@@ -4,11 +4,11 @@ import java.util.*;
 
 public class AccountManagementApp {
     private final Scanner scanner;
-    private final Map<String, Integer> account;
+    private final Map<String, Integer> balances;
 
     public AccountManagementApp(Scanner scanner) {
         this.scanner = scanner;
-        this.account = new HashMap<String, Integer>();
+        this.balances = new HashMap<String, Integer>();
     }
 
     public void run() {
@@ -33,12 +33,12 @@ public class AccountManagementApp {
             String name = inputs[0];
             try {
                 int amount = Integer.parseInt(inputs[1]);
-                if (amount < 0) {
+                if (amount <= 0) {
                     System.out.println("액수는 0보다 커야 합니다.");
                     continue;
                 }
-                int currentAmount = account.getOrDefault(name, 0);
-                account.put(name, currentAmount + amount);
+                int currentAmount = balances.getOrDefault(name, 0);
+                balances.put(name, currentAmount + amount);
                 return;
             } catch (NumberFormatException e) {
                 System.out.println("액수는 정수로 입력해야 합니다.");
@@ -63,21 +63,21 @@ public class AccountManagementApp {
             String name = inputs[0];
             try {
                 int amount = Integer.parseInt(inputs[1]);
-                if (amount < 0) {
+                if (amount <= 0) {
                     System.out.println("액수는 0보다 커야 합니다.");
                     continue;
                 }
 
-                if (!account.containsKey(name)) {
-                    System.out.println("계좌가 존재하지 않는 고객이 아닙니다.");
+                if (!balances.containsKey(name)) {
+                    System.out.println("존재하지 않는 계좌입니다.");
                     return;
                 }
-                int currentAmount = account.getOrDefault(name, 0);
+                int currentAmount = balances.get(name);
                 if (currentAmount < amount) {
                     System.out.println("잔액이 부족하여 출금할 수 없습니다!");
                     return;
                 }
-                account.put(name, currentAmount - amount);
+                balances.put(name, currentAmount - amount);
                 return;
             } catch (NumberFormatException e) {
                 System.out.println("액수는 정수로 입력해야 합니다.");
@@ -93,8 +93,8 @@ public class AccountManagementApp {
                 System.out.println("계좌명을 입력해주세요.");
                 continue;
             }
-            if (account.containsKey(input)) {
-                int amount = account.get(input);
+            if (balances.containsKey(input)) {
+                int amount = balances.get(input);
                 System.out.println("(" + input + ":" + amount + ")");
                 return;
             }
@@ -104,8 +104,12 @@ public class AccountManagementApp {
 
     }
 
-    private void showAllAccount() {
-        for (Map.Entry<String, Integer> entry : account.entrySet()) {
+    private void showAllAccounts() {
+        if (balances.isEmpty()) {
+            System.out.println("등록된 계좌가 없습니다.");
+            return;
+        }
+        for (Map.Entry<String, Integer> entry : balances.entrySet()) {
             String name = entry.getKey();
             Integer amount = entry.getValue();
 
@@ -137,7 +141,7 @@ public class AccountManagementApp {
                         showAccount();
                         break;
                     case 4:
-                        showAllAccount();
+                        showAllAccounts();
                         break;
                     case 5:
                         return;
