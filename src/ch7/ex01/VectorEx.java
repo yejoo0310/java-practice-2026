@@ -6,9 +6,9 @@ public class VectorEx {
     private final Scanner scanner;
     private final Vector<Integer> numbers;
 
-    public VectorEx() {
-        scanner = new Scanner(System.in);
-        numbers = new Vector<Integer>();
+    public VectorEx(Scanner scanner) {
+        this.scanner = scanner;
+        this.numbers = new Vector<Integer>();
     }
 
     private void readNumbers() {
@@ -47,17 +47,14 @@ public class VectorEx {
         printMinimum();
     }
 
-    public void close() {
-        scanner.close();
-    }
-
     public static void main(String[] args) {
-        VectorEx ex = new VectorEx();
+        Scanner scanner = new Scanner(System.in);
 
         try {
+            VectorEx ex = new VectorEx(scanner);
             ex.run();
         } finally {
-            ex.close();
+            scanner.close();
         }
     }
 }
