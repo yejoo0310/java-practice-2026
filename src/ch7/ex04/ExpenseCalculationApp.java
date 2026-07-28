@@ -24,12 +24,10 @@ public class ExpenseCalculationApp {
     }
 
     private void showMenuList() {
-        Set<String> keys = menu.keySet();
-        Iterator<String> it = keys.iterator();
+        for (Map.Entry<String, Integer> entry : menu.entrySet()) {
+            String name = entry.getKey();
+            int price = entry.getValue();
 
-        while (it.hasNext()) {
-            String name = it.next();
-            int price = menu.get(name);
             System.out.print("[" + name + "," + price + "]");
         }
         System.out.println();
