@@ -50,35 +50,43 @@ public class ExpenseCalculationApp {
             }
 
             String[] list = line.split("\\s+");
-            if (list.length == 0 || list.length % 2 != 0) {
-                System.out.println("입력에 문제가 있습니다!");
+            if (list.length % 2 != 0) {
+                System.out.println("물건과 개수를 짝으로 입력해야 합니다!");
                 continue;
             }
 
-            int totalCost = 0;
-            for (int i = 0; i < list.length; i += 2) {
-                if (!menu.containsKey(list[i])) {
-                    System.out.println(list[i] + "은(는) 없는 상품입니다!");
-                    continue;
-                }
-                int cost = menu.get(list[i]);
-
-                try {
-                    int count = Integer.parseInt(list[i + 1]);
-                    if (count < 0) {
-                        System.out.println("입력에 문제가 있습니다!");
-                        continue;
-                    }
-                    totalCost += cost * count;
-                } catch (NumberFormatException e) {
-                    System.out.println("입력에 문제가 있습니다!");
-                }
-            }
-
+            int totalCost = calculateTotalCost(list);
             if (totalCost > 0) {
                 System.out.println("전체 비용은 " + totalCost + "입니다.");
             }
         }
+    }
+
+    private int calculateTotalCost(String[] purchaseList) {
+        int totalCost = 0;
+
+        for (int i = 0; i < purchaseList.length; i += 2) {
+            String productName = purchaseList[i];
+
+            if (!menu.containsKey(productName)) {
+                System.out.println(productName + "은(는) 없는 상품입니다!");
+                continue;
+            }
+
+            try {
+                int count = Integer.parseInt(purchaseList[i + 1]);
+                if (count <= 0) {
+                    System.out.println("입력에 문제가 있습니다!");
+                    continue;
+                }
+                int price = menu.get(productName);
+                totalCost += price * count;
+            } catch (NumberFormatException e) {
+                System.out.println("입력에 문제가 있습니다!");
+            }
+        }
+
+        return totalCost;
     }
 
     public void run() {
