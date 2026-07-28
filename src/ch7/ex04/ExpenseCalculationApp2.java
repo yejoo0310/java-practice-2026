@@ -73,10 +73,10 @@ public class ExpenseCalculationApp2 {
         int totalCost = 0;
 
         for (int i = 0; i < purchaseList.length; i += 2) {
-            String productName = menuName.get(i);
-            int price = menuPrice.get(i);
+            String productName = purchaseList[i];
 
-            if (!menuName.contains(productName)) {
+            int menuIndex = menuName.indexOf(productName);
+            if (menuIndex == -1) {
                 System.out.println(productName + "은(는) 없는 상품입니다!");
                 return null;
             }
@@ -87,6 +87,7 @@ public class ExpenseCalculationApp2 {
                     System.out.println("입력에 문제가 있습니다!");
                     return null;
                 }
+                int price = menuPrice.get(menuIndex);
                 totalCost += price * count;
             } catch (NumberFormatException e) {
                 System.out.println("입력에 문제가 있습니다!");
@@ -107,7 +108,7 @@ public class ExpenseCalculationApp2 {
         Scanner scanner = new Scanner(System.in);
 
         try {
-            ExpenseCalculationApp app = new ExpenseCalculationApp(scanner);
+            ExpenseCalculationApp2 app = new ExpenseCalculationApp2(scanner);
             app.run();
         } finally {
             scanner.close();
