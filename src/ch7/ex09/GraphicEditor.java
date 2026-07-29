@@ -4,20 +4,6 @@ import java.util.Scanner;
 import java.util.Vector;
 
 abstract class Shape {
-    private Shape next;
-
-    public Shape() {
-        next = null;
-    }
-
-    public void setNext(Shape obj) {
-        next = obj;
-    }
-
-    public Shape getNext() {
-        return next;
-    }
-
     public abstract void draw();
 }
 
@@ -44,7 +30,7 @@ class Circle extends Shape {
 
 public class GraphicEditor {
     private final Scanner scanner;
-    private Vector<Shape> shapes;
+    private final Vector<Shape> shapes;
 
     public GraphicEditor(Scanner scanner) {
         this.scanner = scanner;
@@ -60,7 +46,7 @@ public class GraphicEditor {
             }
             return choice;
         } catch (NumberFormatException e) {
-            System.out.println("1-4 사이의 정수를 입력해야 합니다.");
+            System.out.println(min + "-" + max + " 사이의 정수를 입력해야 합니다.");
             return 0;
         }
     }
@@ -121,10 +107,10 @@ public class GraphicEditor {
                     deleteShape(index);
                     break;
                 case 3:
-                    printShape();
+                    printShapes();
                     break;
                 case 4:
-                    System.out.println("Beuty Graphic Editor를 종료합니다.");
+                    System.out.println("Beauty Graphic Editor를 종료합니다.");
                     return;
             }
         }
@@ -153,7 +139,7 @@ public class GraphicEditor {
         shapes.remove(index - 1);
     }
 
-    private void printShape() {
+    private void printShapes() {
         for (Shape shape : shapes) {
             shape.draw();
         }
