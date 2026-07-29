@@ -55,7 +55,19 @@ public class LocationManager {
                 System.out.println("도시, 위도, 경도를 ',' 기준으로 입력해야 합니다.");
                 continue;
             }
+
             String name = inputs[0].trim();
+
+            if (name.isEmpty()) {
+                System.out.println("도시 이름을 입력해야 합니다.");
+                continue;
+            }
+
+            if (locations.containsKey(name)) {
+                System.out.println("이미 등록된 도시입니다.");
+                continue;
+            }
+
             try {
                 double latitude = Double.parseDouble(inputs[1].trim());
                 if (latitude < -90 || latitude > 90) {
