@@ -1,7 +1,7 @@
 package src.ch7.ex08;
 
-import java.util.*;
-import java.util.concurrent.CountDownLatch;
+import java.util.Scanner;
+import java.util.Vector;
 
 class Student {
     private final String name;
@@ -9,6 +9,7 @@ class Student {
     private final int id;
     private final double gpa;
 
+    // todo: 생성자 예외 처리로 Student가 스스로 유효성 보장
     public Student(String name, String major, int id, double gpa) {
         this.name = name;
         this.major = major;
@@ -32,6 +33,7 @@ class Student {
         return gpa;
     }
 
+    @Override
     public String toString() {
         return "이름:" + name + "   전공:" + major + "   학번:" + id + "   학점평균:" + gpa;
     }
@@ -39,6 +41,7 @@ class Student {
 
 public class StudentManager {
     private static final int STUDENT_COUNT = 4;
+    private static final double SCHOLARSHIP_GPA = 4.0;
 
     private final Scanner scanner;
     private final Vector<Student> students;
@@ -48,12 +51,26 @@ public class StudentManager {
         this.students = new Vector<Student>();
     }
 
+    private Student findStudentById(int id) {
+        for (Student student : students) {
+            if (student.getId() == id) {
+                return student;
+            }
+        }
+        return null;
+    }
+
     private void readStudents() {
         System.out.println("4명 이름, 전공, 학번, 학점 입력");
 
         while (students.size() < STUDENT_COUNT) {
             System.out.print(">>");
             String line = scanner.nextLine().trim();
+
+            if (line.isEmpty()) {
+                System.out.println("이름, 전공, 학번, 학점을 입력해주세요.");
+                continue;
+            }
 
             String[] inputs = line.split(",");
             if (inputs.length != 4) {
@@ -63,11 +80,21 @@ public class StudentManager {
 
             String name = inputs[0].trim();
             String major = inputs[1].trim();
+
+            if (name.isEmpty() || major.isEmpty()) {
+                System.out.println("이름과 전공은 비워둘 수 없습니다.");
+                continue;
+            }
+
             try {
                 int id = Integer.parseInt(inputs[2].trim());
+                if (findStudentById(id) != null) {
+                    System.out.println("이미 등록된 학번입니다.");
+                    continue;
+                }
                 double gpa = Double.parseDouble(inputs[3].trim());
                 if (gpa < 0 || gpa > 4.5) {
-                    System.out.println("학점 평균은 0보다 크고, 4.5보다 작아야 합니다.");
+                    System.out.println("학점 평균은 0 이상 4.5 이하여야 합니다.");
                     continue;
                 }
 
@@ -85,13 +112,22 @@ public class StudentManager {
         }
     }
 
-    private void printScholarshipStudent() {
+    private void printScholarshipStudents() {
         System.out.print("장학생: ");
+
+        boolean found = false;
+
         for (Student student : students) {
-            if (student.getGpa() >= 4.0) {
+            if (student.getGpa() >= SCHOLARSHIP_GPA) {
                 System.out.print(student.getName() + " ");
+                found = true;
             }
         }
+
+        if (!found) {
+            System.out.print("없음");
+        }
+
         System.out.println();
     }
 
@@ -134,7 +170,7 @@ public class StudentManager {
         System.out.println("-------------------");
         printAllStudents();
         System.out.println("-------------------");
-        printScholarshipStudent();
+        printScholarshipStudents();
         System.out.println("-------------------");
         searchStudents();
     }
