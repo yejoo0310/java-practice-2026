@@ -3,9 +3,9 @@ package src.ch7.ex07;
 import java.util.*;
 
 class Location {
-    private String name;
-    private double latitude;
-    private double longitude;
+    private final String name;
+    private final double longitude;
+    private final double latitude;
 
     public Location(String name, double latitude, double longitude) {
         this.name = name;
@@ -24,58 +24,68 @@ class Location {
     public double getLongitude() {
         return longitude;
     }
+
+    public String toString() {
+        return name + "   " + latitude + "   " + longitude;
+    }
 }
 
 public class LocationManager {
     private final Scanner scanner;
-    private final HashMap<String, Location> locationInfos;
+    private final Map<String, Location> locations;
 
     public LocationManager(Scanner scanner) {
         this.scanner = scanner;
-        this.locationInfos = new HashMap<String, Location>();
+        this.locations = new HashMap<String, Location>();
     }
 
-    private void readLocation() {
-        System.out.println("도시, 경도, 위도를 입력하세요.");
+    private void readLocations() {
+        System.out.println("도시, 위도, 경도를 입력하세요.");
         while (true) {
             System.out.print(">> ");
             String line = scanner.nextLine().trim();
 
             if (line.isEmpty()) {
-                System.out.println("도시, 경도, 위도를 ',' 기준으로 입력해야 합니다.");
+                System.out.println("도시, 위도, 경도를 ',' 기준으로 입력해야 합니다.");
                 continue;
             }
 
             String[] inputs = line.split(",");
             if (inputs.length != 3) {
-                System.out.println("도시, 경도, 위도를 ',' 기준으로 입력해야 합니다.");
+                System.out.println("도시, 위도, 경도를 ',' 기준으로 입력해야 합니다.");
                 continue;
             }
-            String name = inputs[0];
+            String name = inputs[0].trim();
             try {
                 double latitude = Double.parseDouble(inputs[1].trim());
+                if (latitude < -90 || latitude > 90) {
+                    System.out.println("위도는 -90에서 90 사이여야 합니다.");
+                    continue;
+                }
                 double longitude = Double.parseDouble(inputs[2].trim());
-                locationInfos.put(name, new Location(name, latitude, longitude));
+                if (longitude < -180 || longitude > 180) {
+                    System.out.println("경도는 -180에서 180 사이여야 합니다.");
+                    continue;
+                }
+                locations.put(name, new Location(name, latitude, longitude));
             } catch (NumberFormatException e) {
                 System.out.println("경도와 위도는 숫자로 입력해야 합니다.");
                 continue;
             }
 
-            if (locationInfos.size() == 4) {
+            if (locations.size() == 4) {
                 return;
             }
         }
     }
 
     private void printAllLocations() {
-        for (Map.Entry<String, Location> entry : locationInfos.entrySet()) {
-            String name = entry.getKey();
-            Location location = entry.getValue();
-            System.out.println(name + "   " + location.getLatitude() + "   " + location.getLongitude());
+        for (Location location : locations.values()) {
+            System.out.println(location);
         }
     }
 
-    private void searchLocatioins() {
+    private void searchLocations() {
         while (true) {
             System.out.print("도시 이름 >> ");
             String input = scanner.nextLine().trim();
@@ -89,21 +99,21 @@ public class LocationManager {
                 return;
             }
 
-            Location location = locationInfos.get(input);
+            Location location = locations.get(input);
             if (location == null) {
                 System.out.println(input + "는(은) 없습니다.");
                 continue;
             }
-            System.out.println(location.getName() + "   " + location.getLatitude() + "   " + location.getLongitude());
+            System.out.println(location.toString());
         }
     }
 
     public void run() {
-        readLocation();
+        readLocations();
         System.out.println("-------------------");
         printAllLocations();
         System.out.println("-------------------");
-        searchLocatioins();
+        searchLocations();
     }
 
     public static void main(String[] args) {
