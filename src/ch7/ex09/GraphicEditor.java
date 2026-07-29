@@ -37,51 +37,43 @@ public class GraphicEditor {
         this.shapes = new Vector<Shape>();
     }
 
-    private int validateInput(String input, int min, int max) {
-        try {
-            int choice = Integer.parseInt(input);
-            if (choice < min || choice > max) {
+    private int readInt(String prompt, int min, int max) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+
+            try {
+                int value = Integer.parseInt(input);
+                if (value >= min && value <= max) {
+                    return value;
+                }
+            } catch (NumberFormatException e) {
                 System.out.println(min + "-" + max + " 사이의 정수를 입력해야 합니다.");
-                return 0;
             }
-            return choice;
-        } catch (NumberFormatException e) {
+
             System.out.println(min + "-" + max + " 사이의 정수를 입력해야 합니다.");
-            return 0;
         }
     }
 
     private int getUserMenu() {
-        while (true) {
-            System.out.print("삽입(1), 삭제(2), 모두 보기(3), 종료(4)>>");
-            String input = scanner.nextLine().trim();
-            int choice = validateInput(input, 1, 4);
-            if (choice != 0) {
-                return choice;
-            }
-        }
+        return readInt(
+                "삽입(1), 삭제(2), 모두 보기(3), 종료(4)>>",
+                1,
+                4);
     }
 
     private int getUserShape() {
-        while (true) {
-            System.out.print("Line(1), Rect(2), Circle(3)>>");
-            String input = scanner.nextLine().trim();
-            int choice = validateInput(input, 1, 3);
-            if (choice != 0) {
-                return choice;
-            }
-        }
+        return readInt(
+                "Line(1), Rect(2), Circle(3)>>",
+                1,
+                3);
     }
 
     private int getUserIndex() {
-        while (true) {
-            System.out.print("삭제할 도형의 위치>>");
-            String input = scanner.nextLine().trim();
-            int index = validateInput(input, 1, shapes.size());
-            if (index != 0) {
-                return index;
-            }
-        }
+        return readInt(
+                "삭제할 도형의 위치>>",
+                1,
+                shapes.size());
     }
 
     public void run() {
@@ -100,10 +92,6 @@ public class GraphicEditor {
                         break;
                     }
                     int index = getUserIndex();
-                    if (index == 0) {
-                        System.out.println("삭제할 수 없습니다.");
-                        break;
-                    }
                     deleteShape(index);
                     break;
                 case 3:
