@@ -17,9 +17,9 @@ public class StudentManager2 {
     }
 
     private Student findStudentById(int id) {
-        for (Map.Entry<String, Student> entry : students.entrySet()) {
-            if (entry.getValue().getId() == id) {
-                return entry.getValue();
+        for (Student student : students.values()) {
+            if (student.getId() == id) {
+                return student;
             }
         }
 
@@ -97,15 +97,6 @@ public class StudentManager2 {
         System.out.println();
     }
 
-    private Student findStudent(String name) {
-        for (Map.Entry<String, Student> student : students.entrySet()) {
-            if (name.equals(student.getKey())) {
-                return student.getValue();
-            }
-        }
-        return null;
-    }
-
     private void searchStudents() {
         while (true) {
             System.out.print("학생 이름 >> ");
@@ -120,7 +111,7 @@ public class StudentManager2 {
                 return;
             }
 
-            Student student = findStudent(name);
+            Student student = students.get(name);
             if (student == null) {
                 System.out.println(name + "학생이 없습니다.");
                 continue;
