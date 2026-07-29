@@ -41,7 +41,7 @@ public class DailyStepTracker {
                 continue;
             }
 
-            ArrayList<Integer> steps = dailyStepsByPerson.getOrDefault(name, new ArrayList<Integer>());
+            ArrayList<Integer> newSteps = new ArrayList<Integer>();
 
             for (int i = 1; i < inputs.length; i++) {
                 try {
@@ -50,13 +50,21 @@ public class DailyStepTracker {
                         System.out.println(step + "는 음수이므로 포함되지 않습니다.");
                         continue;
                     }
-                    steps.add(step);
+                    newSteps.add(step);
                 } catch (NumberFormatException e) {
                     System.out.println("걸음수는 숫자로 입력해야 합니다.");
                 }
             }
 
-            dailyStepsByPerson.put(name, steps);
+            if (newSteps.isEmpty()) {
+                System.out.println("유효한 걸음수가 하나 이상 필요합니다.");
+                continue;
+            }
+
+            ArrayList<Integer> savedSteps = dailyStepsByPerson.getOrDefault(name, new ArrayList<Integer>());
+            savedSteps.addAll(newSteps);
+
+            dailyStepsByPerson.put(name, savedSteps);
         }
     }
 
@@ -108,7 +116,7 @@ public class DailyStepTracker {
 
             ArrayList<Integer> steps = dailyStepsByPerson.get(name);
             if (steps == null) {
-                System.out.println(name + "은(는) 없는 학생입니다.");
+                System.out.println(name + "은(는) 없는 사람입니다.");
                 continue;
             }
 
