@@ -76,6 +76,20 @@ public class GraphicEditor {
                 shapes.size());
     }
 
+    private void handleAdd() {
+        int selectedShape = getUserShape();
+        addShape(selectedShape);
+    }
+
+    private void handleDelete() {
+        if (shapes.isEmpty()) {
+            System.out.println("삭제할 수 없습니다.");
+            return;
+        }
+        int index = getUserIndex();
+        deleteShape(index);
+    }
+
     public void run() {
         System.out.println("그래픽 에디터 Beauty Graphic Editor를 실행합니다.");
 
@@ -83,16 +97,10 @@ public class GraphicEditor {
             int command = getUserMenu();
             switch (command) {
                 case 1:
-                    int selectedShape = getUserShape();
-                    addShape(selectedShape);
+                    handleAdd();
                     break;
                 case 2:
-                    if (shapes.isEmpty()) {
-                        System.out.println("삭제할 수 없습니다.");
-                        break;
-                    }
-                    int index = getUserIndex();
-                    deleteShape(index);
+                    handleDelete();
                     break;
                 case 3:
                     printShapes();
