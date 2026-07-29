@@ -1,18 +1,19 @@
 package src.ch7.ex07;
 
 import java.util.*;
-import src.ch7.ex07.Location;
 
+// todo: LocationManager와 겹치는 부분 클래스나 인터페이스로 구현해서 상속시켜보기
 public class LocationManager2 {
+    private static final int LOCATION_COUNT = 4;
     private final Scanner scanner;
-    private final ArrayList<Location> locations;
+    private final List<Location> locations;
 
     public LocationManager2(Scanner scanner) {
         this.scanner = scanner;
         this.locations = new ArrayList<Location>();
     }
 
-    private Location getLocation(String name) {
+    private Location findLocation(String name) {
         for (Location location : locations) {
             if (name.equals(location.getName())) {
                 return location;
@@ -23,7 +24,7 @@ public class LocationManager2 {
 
     private void readLocations() {
         System.out.println("도시, 위도, 경도를 입력하세요.");
-        while (true) {
+        while (locations.size() < LOCATION_COUNT) {
             System.out.print(">> ");
             String line = scanner.nextLine().trim();
 
@@ -45,7 +46,7 @@ public class LocationManager2 {
                 continue;
             }
 
-            if (getLocation(name) != null) {
+            if (findLocation(name) != null) {
                 System.out.println("이미 등록된 도시입니다.");
                 continue;
             }
@@ -65,11 +66,6 @@ public class LocationManager2 {
                 locations.add(location);
             } catch (NumberFormatException e) {
                 System.out.println("경도와 위도는 숫자로 입력해야 합니다.");
-                continue;
-            }
-
-            if (locations.size() == 4) {
-                return;
             }
         }
     }
@@ -94,12 +90,12 @@ public class LocationManager2 {
                 return;
             }
 
-            Location location = getLocation(input);
+            Location location = findLocation(input);
             if (location == null) {
                 System.out.println(input + "는(은) 없습니다.");
                 continue;
             }
-            System.out.println(location.toString());
+            System.out.println(location);
         }
     }
 
